@@ -2,5 +2,24 @@
 
 set -e
 
-docker build --file=Dockerfile -t greatdrink .
-docker-compose -f docker-compose.yml up
+build(){
+    docker build --file=Dockerfile -t greatdrink .
+    docker-compose -f docker-compose.yml up
+}
+
+start() {
+  echo "✋ Do: Stopping docker containers."
+  docker-compose -f docker-compose.yml up
+}
+
+case $1 in 
+    start)
+    start
+    ;;
+    build)
+    build
+    ;;
+    *)
+    echo "⚠️  Unknown action. Please use 'build' to build and start or 'start' to start the application"
+    ;;
+esac

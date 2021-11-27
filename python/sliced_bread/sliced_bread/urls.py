@@ -24,4 +24,5 @@ router.register(r'orders', views.GreatDrinkView, 'order')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('', include('GreatDrink.urls')),
 ]
