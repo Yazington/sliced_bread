@@ -3,13 +3,13 @@
 set -e
 
 build(){
-    docker build --file=Dockerfile -t greatdrink .
-    docker-compose -f docker-compose.yml up
+  docker build --file=Dockerfile -t greatdrink .
+  docker-compose -f docker-compose.dev.yml up --build
 }
 
 start() {
   echo "✋ Do: Stopping docker containers."
-  docker-compose -f docker-compose.yml up
+  docker-compose -f docker-compose.dev.yml up
 }
 
 case $1 in 

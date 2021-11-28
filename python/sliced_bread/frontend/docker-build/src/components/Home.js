@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import drink from "../assets/drink.jpg";
-import sendOrder, { getOrders } from "../services/orderService";
+import sendOrder from "../services/orderService";
+import OrderConfirmation from "./OrderConfirmation";
 const Chance = require("chance").Chance;
 
 const chance = new Chance();
 export default class Home extends Component {
-  state = {
-    order: {},
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      orderNumber: undefined,
+      orderLink: undefined,
+    };
+  }
 
   getRandomName = () => {
     return chance.name() + " @" + chance.word();
@@ -39,9 +44,8 @@ export default class Home extends Component {
       values.push(element.value);
     }
     const result = Object.assign(...keys.map((k, i) => ({ [k]: values[i] })));
-    const response = await sendOrder(result);
-    console.log(response);
-    // this.setState();
+    const { orderNumber, confirmationOrderLink } = await sendOrder(result);
+    this.setState({ orderLink: confirmationOrderLink, orderNumber });
   };
 
   renderForm = () => {
@@ -107,7 +111,18 @@ export default class Home extends Component {
     );
   };
 
+  renderOrderConfirmation = () => {
+    console.log(this.state);
+    return (
+      <OrderConfirmation
+        isDetailedOrder={0}
+        confirmationUID={this.state.orderNumber}
+      />
+    );
+  };
+
   render = () => {
+    const customerHasOrdered = this.state.orderLink !== undefined;
     return (
       <main className="container">
         <div className="row">
@@ -115,6 +130,7 @@ export default class Home extends Component {
           <div className="col-sm d-flex flex-column justify-content-center">
             {this.renderTitle()}
             {this.renderForm()}
+            {customerHasOrdered ? this.renderOrderConfirmation() : ""}
             <h2
               class="drinkDescription"
               className="font-italic font-weight-light text-center align-self-end"

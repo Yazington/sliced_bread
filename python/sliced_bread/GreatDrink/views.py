@@ -33,9 +33,10 @@ def order_list(request):
         return JsonResponse(serializer.errors, status=400)
 
 def orderConfirmation(request, orderNumber):
+    print(orderNumber)
     if request.method == 'GET':
         orderQuery = Order.objects.filter(orderNumber=orderNumber)
         if orderQuery.none():
             return JsonResponse({'status':'false','message':''} ,status=400)
         order = json.loads(serializers.serialize('json', orderQuery))[0]['fields']
-        return JsonResponse(order['orderNumber'], safe=False)
+        return JsonResponse(order, safe=False)
