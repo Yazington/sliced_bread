@@ -20,3 +20,7 @@ python manage.py createsuperuser
 ## frontend:
 
 execute `./do build`
+
+---
+
+to start the frontend, go on localhost:3000 on your broswer
